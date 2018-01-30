@@ -8,10 +8,19 @@
     <Filter Include="src\core">
       <UniqueIdentifier>{15897535-ba27-4180-9bb2-e7a72eb64e4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\app">
+      <UniqueIdentifier>{a4afb43b-18ba-4fc0-880a-b68418a54085}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\app.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\app_instance.cpp">
+      <Filter>src\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -20,6 +29,12 @@
     </ClInclude>
     <ClInclude Include="src\core\types.h">
       <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\app.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\app_instance.h">
+      <Filter>src\app</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

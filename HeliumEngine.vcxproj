@@ -172,8 +172,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\app\app.cpp" />
+    <ClCompile Include="src\app\app_instance.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\app\app.h" />
+    <ClInclude Include="src\app\app_instance.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\helium_std.h" />
   </ItemGroup>
