@@ -172,13 +172,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\app\app.cpp" />
-    <ClCompile Include="src\app\app_instance.cpp" />
+    <ClCompile Include="src\core\engine.cpp" />
+    <ClCompile Include="src\core\window_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app\app.h" />
-    <ClInclude Include="src\app\app_instance.h" />
+    <ClInclude Include="src\core\core.h" />
+    <ClInclude Include="src\core\engine.h" />
     <ClInclude Include="src\core\types.h" />
+    <ClInclude Include="src\core\window_manager.h" />
+    <ClInclude Include="src\core\_glfw_glew_include.h" />
+    <ClInclude Include="src\helium_engine.h" />
     <ClInclude Include="src\helium_std.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
