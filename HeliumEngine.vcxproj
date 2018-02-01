@@ -173,11 +173,16 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\core\engine.cpp" />
+    <ClCompile Include="src\core\input.cpp" />
+    <ClCompile Include="src\core\input_manager.cpp" />
     <ClCompile Include="src\core\window_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\core.h" />
     <ClInclude Include="src\core\engine.h" />
+    <ClInclude Include="src\core\input.h" />
+    <ClInclude Include="src\core\input_listeners.h" />
+    <ClInclude Include="src\core\input_manager.h" />
     <ClInclude Include="src\core\types.h" />
     <ClInclude Include="src\core\window_manager.h" />
     <ClInclude Include="src\core\_glfw_glew_include.h" />

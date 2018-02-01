@@ -19,6 +19,12 @@
     <ClCompile Include="src\core\engine.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\input_manager.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\input.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\helium_std.h">
@@ -40,6 +46,15 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\core\_glfw_glew_include.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\input.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\input_manager.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\input_listeners.h">
       <Filter>src\core</Filter>
     </ClInclude>
   </ItemGroup>

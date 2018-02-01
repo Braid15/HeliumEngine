@@ -64,13 +64,15 @@ namespace HeliumEngine {
         glfwInit();
 
         _window_manager = &WindowManager::get_singleton();
-
         if (!_window_manager->initialize()) return false;
 
+        // Do this stuff before initializing any other manager
         glfwMakeContextCurrent(&_window_manager->get_glfw_window());
-
         glewExperimental = true;
         glewInit();
+
+        _input_manager = &InputManager::get_singleton();
+        if (!_input_manager->initialize()) return false;
 
         if (_vsync) {
             glfwSwapInterval(1);
@@ -83,13 +85,30 @@ namespace HeliumEngine {
     void Engine::shutdown() {
         assert(_window_manager);
         _window_manager->shutdown();
+
+        assert(_input_manager);
+        _input_manager->shutdown();
     }
 
     void Engine::process_input() {
-
+        // Pass processed input from InputManager to game app
     }
 
+    // @TEMP:
+    TestKeyboardInputListener l;
     void Engine::update() {
+
+        if (_input_manager->is_key_pressed(KEY_ENTER)) {
+            IKeyboardInputSubject* s = dynamic_cast<IKeyboardInputSubject*>(_input_manager);
+
+            s->subscribe_listener(dynamic_cast<IKeyboardInputListener*>(&l));
+        }
+        if (_input_manager->is_key_pressed(KEY_BACKSPACE)) {
+            IKeyboardInputSubject* s = dynamic_cast<IKeyboardInputSubject*>(_input_manager);
+
+            s->unsubscribe_listener(dynamic_cast<IKeyboardInputListener*>(&l));
+        }
+        // update game app
     }
 
     void Engine::render() {

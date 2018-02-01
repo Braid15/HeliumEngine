@@ -33,5 +33,6 @@
 #include <iomanip>
 #include <cassert>
 #include <strstream>
+#include <algorithm>
 
 #include <core/types.h>

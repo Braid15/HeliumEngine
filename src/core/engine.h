@@ -3,6 +3,7 @@
 #include <helium_std.h>
 #include "_glfw_glew_include.h"
 #include "window_manager.h"
+#include "input_manager.h"
 
 namespace HeliumEngine {
     // @TODO: See below to see what else needs implementing
@@ -15,15 +16,16 @@ namespace HeliumEngine {
     class Engine final {
     private:
         static Engine _singleton;
+
         WindowManager* _window_manager;
+        InputManager* _input_manager;
+
 
         int8 _exit_code;
         uint8 _fps;
 
         // @TODO: I don't know if this should be in this class
         bool _vsync;
-
-
     public:
         Engine(const Engine&) = delete;
         ~Engine() {}
