@@ -94,27 +94,14 @@ namespace HeliumEngine {
         // Pass processed input from InputManager to game app
     }
 
-    // @TEMP:
-    TestKeyboardInputListener l;
-    void Engine::update() {
-
-        if (_input_manager->is_key_pressed(KEY_ENTER)) {
-            IKeyboardInputSubject* s = dynamic_cast<IKeyboardInputSubject*>(_input_manager);
-
-            s->subscribe_listener(dynamic_cast<IKeyboardInputListener*>(&l));
-        }
-        if (_input_manager->is_key_pressed(KEY_BACKSPACE)) {
-            IKeyboardInputSubject* s = dynamic_cast<IKeyboardInputSubject*>(_input_manager);
-
-            s->unsubscribe_listener(dynamic_cast<IKeyboardInputListener*>(&l));
-        }
-        // update game app
-    }
-
     void Engine::render() {
        glClearColor(0.2, 0.2, 0.2, 1.0);
        glClear(GL_COLOR_BUFFER_BIT);
        glfwSwapBuffers(&_window_manager->get_glfw_window());
+    }
+
+    void Engine::update() {
+
     }
 
     int Engine::get_exit_code() const {
