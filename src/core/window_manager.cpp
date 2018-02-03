@@ -78,7 +78,6 @@ namespace HeliumEngine {
         return _title;
     }
 
-
     WindowManager::WindowManager() {
         // Setting values to default. Ctor shouldn't do anything else
         _height = 1080;

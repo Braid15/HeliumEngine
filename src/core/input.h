@@ -191,7 +191,4 @@ namespace HeliumEngine {
 
         JoystickData();
     };
-
-
-    
 }

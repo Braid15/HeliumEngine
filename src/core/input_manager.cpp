@@ -294,19 +294,19 @@ namespace HeliumEngine {
         // Nothing to cleanup
     }
 
-    bool InputManager::is_key_pressed(Key key) const {
+    bool InputManager::is_key_pressed(const Key key) const {
         if (key == KEY_NULL || key == KEY_LAST) return false;
 
         return _keyboard_data.keys[key] == KEY_STATE_PRESSED;
     }
 
-    bool InputManager::is_mouse_button_pressed(MouseButton button) const {
+    bool InputManager::is_mouse_button_pressed(const MouseButton button) const {
         if (button == MOUSE_BUTTON_NULL || button == MOUSE_BUTTON_LAST) return false;
 
         return _mouse_data.buttons[button] == BUTTON_STATE_PRESSED;
     }
 
-    bool InputManager::is_joystick_button_pressed(JoystickButton button) const {
+    bool InputManager::is_joystick_button_pressed(const JoystickButton button) const {
         if (button == JOYSTICK_BUTTON_NULL || button == JOYSTICK_BUTTON_LAST) return false;
 
         return _joystick_data.buttons[button] == BUTTON_STATE_PRESSED;
@@ -320,7 +320,7 @@ namespace HeliumEngine {
         return _mouse_data.cursor_y;
     }
 
-    std::string InputManager::get_key_name(Key key) const {
+    std::string InputManager::get_key_name(const Key key) const {
         return std::string(get_helium_key_name(key));
     }
 }

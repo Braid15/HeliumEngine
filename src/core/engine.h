@@ -4,6 +4,7 @@
 #include "_glfw_glew_include.h"
 #include "window_manager.h"
 #include "input_manager.h"
+#include "render_manager.h"
 
 namespace HeliumEngine {
     // @TODO: See below to see what else needs implementing

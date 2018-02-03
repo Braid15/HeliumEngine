@@ -97,6 +97,10 @@ namespace HeliumEngine {
     void Engine::render() {
        glClearColor(0.2, 0.2, 0.2, 1.0);
        glClear(GL_COLOR_BUFFER_BIT);
+
+       RenderManager::get_singleton().draw_line(0, 0, 1, 1);
+       RenderManager::get_singleton().render_batch();
+
        glfwSwapBuffers(&_window_manager->get_glfw_window());
     }
 

@@ -35,14 +35,14 @@ namespace HeliumEngine {
         bool initialize();
         void shutdown();
 
-        bool is_key_pressed(Key key) const;
-        bool is_mouse_button_pressed(MouseButton button) const;
-        bool is_joystick_button_pressed(JoystickButton button) const;
+        bool is_key_pressed(const Key key) const;
+        bool is_mouse_button_pressed(const MouseButton button) const;
+        bool is_joystick_button_pressed(const JoystickButton button) const;
 
         float32 get_cursor_x() const;
         float32 get_cursor_y() const;
 
-        std::string get_key_name(Key key) const;
+        std::string get_key_name(const Key key) const;
 
     private:
         InputManager() {}
