@@ -8,6 +8,21 @@
     <Filter Include="src\core">
       <UniqueIdentifier>{15897535-ba27-4180-9bb2-e7a72eb64e4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\core\math">
+      <UniqueIdentifier>{52ab1c0c-c5b9-4e47-90a6-914184591bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{18c0b924-8964-4f20-b4dd-66473619b90e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\shaders">
+      <UniqueIdentifier>{38b176c1-c4f0-44e1-b709-5bc9329d7e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\graphics">
+      <UniqueIdentifier>{198826cf-a35b-499a-ac7e-515d697d9dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\app">
+      <UniqueIdentifier>{96be3e8f-a20f-419b-8197-d1271eeca9b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,6 +45,27 @@
     </ClCompile>
     <ClCompile Include="src\core\shader.cpp">
       <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\math.cpp">
+      <Filter>src\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\render_component.cpp">
+      <Filter>src\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\render_component_2d.cpp">
+      <Filter>src\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\simple_renderer_2d.cpp">
+      <Filter>src\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\transform.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\game_app.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\application.cpp">
+      <Filter>src\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,5 +105,37 @@
     <ClInclude Include="src\core\shader.h">
       <Filter>src\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\math\math.h">
+      <Filter>src\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\irenderer.h">
+      <Filter>src\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\render_component.h">
+      <Filter>src\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\render_component_2d.h">
+      <Filter>src\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\simple_renderer_2d.h">
+      <Filter>src\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\transform.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\game_app.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\application.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="run_tree\resources\shaders\basic.frag">
+      <Filter>resources\shaders</Filter>
+    </None>
+    <None Include="run_tree\resources\shaders\basic.vert">
+      <Filter>resources\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

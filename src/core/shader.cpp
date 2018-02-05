@@ -110,15 +110,15 @@ namespace HeliumEngine {
         glDeleteProgram(_program_handle);
     }
 
-    void Shader::bind() const {
+    void Shader::enable() const {
         glUseProgram(_program_handle);
     }
 
-    void Shader::unbind() const {
+    void Shader::disable() const {
         glUseProgram(0);
     }
 
-    bool Shader::set_int32_uniform(const char* uniform, const int32& value) {
+    bool Shader::set_uniform(const char* uniform, const int32& value) {
         uint32 location = glGetUniformLocation(_program_handle, uniform);
 
         if (location < 0) {
@@ -130,7 +130,7 @@ namespace HeliumEngine {
         return true;
     }
 
-    bool Shader::set_float32_uniform(const char* uniform, const float32& value) {
+    bool Shader::set_uniform(const char* uniform, const float32& value) {
         uint32 location = glGetUniformLocation(_program_handle, uniform);
 
         if (location < 0) {
@@ -140,6 +140,63 @@ namespace HeliumEngine {
 
         glUniform1f(location, value);
         return true;
+    }
+
+    bool Shader::set_uniform(const char* uniform, const mat4& value) {
+        uint32 location = glGetUniformLocation(_program_handle, uniform);
+
+        if (location < 0) {
+            set_error_string("Unable to find mat4 uniform: " + std::string(uniform));
+            return false;
+        }
+
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+        return true;
+    }
+
+    bool Shader::set_uniform(const char* uniform, const mat3& value) {
+        uint32 location = glGetUniformLocation(_program_handle, uniform);
+
+        if (location < 0) {
+            set_error_string("Unable to find mat3 uniform: " + std::string(uniform));
+            return false;
+        }
+
+        glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
+        return true;
+    }
+
+    bool Shader::set_uniform(const char* uniform, const vec2& value) {
+        uint32 location = glGetUniformLocation(_program_handle, uniform);
+
+        if (location < 0) {
+            set_error_string("Unable to find vec2 uniform: " + std::string(uniform));
+            return false;
+        }
+
+        glUniform2fv(location, 1, glm::value_ptr(value));
+    }
+
+    bool Shader::set_uniform(const char* uniform, const vec3& value) {
+        uint32 location = glGetUniformLocation(_program_handle, uniform);
+
+        if (location < 0) {
+            set_error_string("Unable to find vec3 uniform: " + std::string(uniform));
+            return false;
+        }
+
+        glUniform3fv(location, 1, glm::value_ptr(value));
+    }
+
+    bool Shader::set_uniform(const char* uniform, const vec4& value) {
+        uint32 location = glGetUniformLocation(_program_handle, uniform);
+
+        if (location < 0) {
+            set_error_string("Unable to find vec4 uniform: " + std::string(uniform));
+            return false;
+        }
+
+        glUniform4fv(location, 1, glm::value_ptr(value));
     }
 
     bool Shader::load_shader_code() {

@@ -244,8 +244,8 @@ namespace HeliumEngine {
     static void glfw_mouse_cursor_callback(GLFWwindow* window, double x_pos, double y_pos) {
         MouseData* const mouse_data = &InputManager::get_singleton()._mouse_data;
 
-        mouse_data->cursor_x = static_cast<float32>(x_pos);
-        mouse_data->cursor_y = static_cast<float32>(y_pos);
+        mouse_data->position.x = static_cast<float32>(x_pos);
+        mouse_data->position.y = static_cast<float32>(y_pos);
     }
 
     static void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
@@ -312,15 +312,25 @@ namespace HeliumEngine {
         return _joystick_data.buttons[button] == BUTTON_STATE_PRESSED;
     }
 
-    float32 InputManager::get_cursor_x() const {
-        return _mouse_data.cursor_x;
-    }
-
-    float32 InputManager::get_cursor_y() const {
-        return _mouse_data.cursor_y;
+    vec2 InputManager::get_cursor_position() const {
+        return _mouse_data.position;
     }
 
     std::string InputManager::get_key_name(const Key key) const {
         return std::string(get_helium_key_name(key));
     }
+
+    MouseData& InputManager::get_mouse_data() {
+        return _mouse_data;
+    }
+
+    KeyboardData& InputManager::get_keyboard_data() {
+        return _keyboard_data;
+    }
+
+    JoystickData& InputManager::get_joystick_data() {
+        return _joystick_data;
+    }
+
+
 }

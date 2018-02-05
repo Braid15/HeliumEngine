@@ -5,6 +5,7 @@
 #include "window_manager.h"
 #include "input_manager.h"
 #include "render_manager.h"
+#include <app/game_app.h>
 
 namespace HeliumEngine {
     // @TODO: See below to see what else needs implementing
@@ -16,10 +17,15 @@ namespace HeliumEngine {
     // @TODO: The idea is to make the engine a dll so that apps can change
     class Engine final {
     private:
+        friend class Application;
+
         static Engine _singleton;
 
         WindowManager* _window_manager;
         InputManager* _input_manager;
+        RenderManager* _render_manager;
+
+        GameApp* _application;
 
 
         int8 _exit_code;
@@ -44,6 +50,8 @@ namespace HeliumEngine {
         void process_input();
         void update();
         void render();
+
+        void set_application(GameApp* app);
 
         int get_exit_code() const;
     };

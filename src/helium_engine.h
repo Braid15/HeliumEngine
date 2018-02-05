@@ -4,3 +4,6 @@
 // since that includes files that are not part of the engine
 
 #include "core/core.h"
+#include "core/math/math.h"
+#include "app/application.h"
+#include "app/game_app.h"

@@ -12,6 +12,8 @@ namespace HeliumEngine {
 
     class InputManager final {
     private:
+        friend class Engine;
+
         friend void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         friend void glfw_mouse_cursor_callback(GLFWwindow* window, double x_pos, double y_pos);
         friend void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -32,19 +34,22 @@ namespace HeliumEngine {
 
         static InputManager& get_singleton();
 
-        bool initialize();
-        void shutdown();
-
         bool is_key_pressed(const Key key) const;
         bool is_mouse_button_pressed(const MouseButton button) const;
         bool is_joystick_button_pressed(const JoystickButton button) const;
 
-        float32 get_cursor_x() const;
-        float32 get_cursor_y() const;
+        vec2 get_cursor_position() const;
 
         std::string get_key_name(const Key key) const;
 
+        MouseData& get_mouse_data();
+        KeyboardData& get_keyboard_data();
+        JoystickData& get_joystick_data();
+
     private:
         InputManager() {}
+
+        bool initialize();
+        void shutdown();
     };
 }

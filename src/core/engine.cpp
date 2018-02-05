@@ -1,4 +1,7 @@
 #include "engine.h"
+#include <core/math/math.h>
+#include <core/graphics/render_component.h>
+#include <core/graphics/render_component_2d.h>
 
 namespace HeliumEngine {
 
@@ -55,6 +58,8 @@ namespace HeliumEngine {
         // Setting fields to default. Ctor should not be used for anything else.
         _exit_code      = 0;
         _window_manager = nullptr;
+        _input_manager  = nullptr;
+        _render_manager = nullptr;
         _vsync          = true;
     }
 
@@ -74,38 +79,60 @@ namespace HeliumEngine {
         _input_manager = &InputManager::get_singleton();
         if (!_input_manager->initialize()) return false;
 
+        _render_manager = &RenderManager::get_singleton();
+        if (!_render_manager->initialize()) return false;
+
         if (_vsync) {
             glfwSwapInterval(1);
         }
 
+        assert(_application);
+        if (!_application->initialize()) return false;
+
         _exit_code = 0;
+
+
         return true;
     }
 
     void Engine::shutdown() {
-        assert(_window_manager);
-        _window_manager->shutdown();
+        // Order is important here!! Should be opposite to init order in Engine::initialize()
+        assert(_application);
+        _application->shutdown();
+
+        assert(_render_manager);
+        _render_manager->shutdown();
 
         assert(_input_manager);
         _input_manager->shutdown();
+
+        assert(_window_manager);
+        _window_manager->shutdown();
     }
 
     void Engine::process_input() {
-        // Pass processed input from InputManager to game app
+        assert(_application);
+        InputData data(_input_manager->get_keyboard_data(),
+                       _input_manager->get_mouse_data(),
+                       _input_manager->get_joystick_data());
+        _application->handle_input(data);
     }
 
     void Engine::render() {
-       glClearColor(0.2, 0.2, 0.2, 1.0);
-       glClear(GL_COLOR_BUFFER_BIT);
-
-       RenderManager::get_singleton().draw_line(0, 0, 1, 1);
-       RenderManager::get_singleton().render_batch();
-
-       glfwSwapBuffers(&_window_manager->get_glfw_window());
+        assert(_render_manager);
+        _render_manager->render_begin();
+        _render_manager->render();
+        _render_manager->render_end();
+        _render_manager->render_present();
     }
 
     void Engine::update() {
+        assert(_application);
+        _application->update();
+    }
 
+    void Engine::set_application(GameApp* app) {
+        _application = app;
     }
 
     int Engine::get_exit_code() const {

@@ -1,4 +1,9 @@
 #include "render_manager.h"
+#include "window_manager.h"
+#include "shader.h"
+#include "math/math.h"
+#include "input_manager.h"
+#include "graphics/simple_renderer_2d.h"
 
 namespace HeliumEngine {
 
@@ -8,40 +13,110 @@ namespace HeliumEngine {
         return _singleton;
     }
 
+    void RenderManager::submit(ARenderComponent* render_component) {
+        assert(_renderer);
+        _renderer->submit(render_component);
+    }
+
     bool RenderManager::initialize() {
-        glGenBuffers(2, _primitive_batch_vbo);
+        //glViewport(0, 0, WindowManager::get_singleton().get_width(), WindowManager::get_singleton().get_height());
 
-        glBindBuffer(GL_ARRAY_BUFFER, _primitive_batch_vbo[0]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(_primitive_batch_vertices_buffer[0]), _primitive_batch_vertices_buffer[0], GL_DYNAMIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, _primitive_batch_vbo[1]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(_primitive_batch_vertices_buffer[1]), _primitive_batch_vertices_buffer[1], GL_DYNAMIC_DRAW);
+        set_renderer(new SimpleRenderer2D());
 
         return true;
     }
 
     void RenderManager::shutdown() {
-        glDeleteBuffers(2, _primitive_batch_vbo);
+        if (_renderer) {
+            _renderer->shutdown();
+            delete _renderer;
+        }
+        _renderer = nullptr;
     }
 
     void RenderManager::draw_line(uint32 start_x, uint32 start_y, uint32 end_x, uint32 end_y) {
-        uint8 buffer = (_current_buffer == 0) ? 1 : 0;  
-        _primitive_batch_vertices_buffer[buffer][_batch_count++] = start_x;
-        _primitive_batch_vertices_buffer[buffer][_batch_count++] = start_y;
-        _primitive_batch_vertices_buffer[buffer][_batch_count++] = end_x;
-        _primitive_batch_vertices_buffer[buffer][_batch_count++] = end_y;
-    }
-
-    void RenderManager::render_batch() {
-
-        glBindBuffer(GL_ARRAY_BUFFER, _primitive_batch_vbo[_current_buffer]);
-        glDrawArrays(GL_LINES, 0, _batch_count / 2);
-
-        _batch_count = 0;
-        _current_buffer = (_current_buffer == 0) ? 1 : 0;
     }
 
     // Only initializes values. Ctor should not do anything else
-    RenderManager::RenderManager() : _current_buffer(0), _batch_count(0)
-    {}
+    RenderManager::RenderManager() {
+        _renderer = nullptr;
+    }
+
+    void RenderManager::set_renderer(IRenderer* renderer) {
+        if (_renderer) {
+            _renderer->shutdown();
+            delete _renderer;
+        }
+        _renderer = renderer;
+        _renderer->initialize();
+    }
+
+    void RenderManager::add_render_component(ARenderComponent* const component) {
+        // @TODO: Optimize this. This will eventually need to be changed if different data
+        //        structure is going to be used
+        std::list<ARenderComponent*>::iterator iter = _render_components.begin();
+        std::list<ARenderComponent*>::iterator end  = _render_components.end();
+
+        while (iter != end) {
+            if (component == *iter) {
+                std::cout << "[RenderManager] Attempting to double register render component\n";
+                return;
+            }
+            iter++;
+        }
+        _render_components.push_back(component);
+
+        #ifdef _DEBUG
+        std::cout << "[RenderManager] RenderComponent count: " << _render_components.size() << "\n";
+        #endif
+    }
+
+    void RenderManager::remove_render_component(ARenderComponent* const component) {
+         std::list<ARenderComponent*>::iterator iter = _render_components.begin();
+         std::list<ARenderComponent*>::iterator end  = _render_components.end();       
+
+         while (iter != end) {
+             if (component == *iter) {
+                 _render_components.remove(component);
+
+                 #ifdef _DEBUG
+                 std::cout << "[RenderManager] RenderComponent count: " << _render_components.size() << "\n";
+                 #endif
+
+                 return;
+             }
+             iter++;
+         }
+
+         std::cout << "[RenderManager] Could not find render component to remove\n";
+    }
+
+    void RenderManager::render_begin() {
+        assert(_renderer);
+        const vec4& color = WindowManager::get_singleton().get_background_color();
+        glClearColor(color.r, color.g, color.b, color.a);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // @TEMP
+        std::list<ARenderComponent*>::iterator iter = _render_components.begin();
+        std::list<ARenderComponent*>::iterator end  = _render_components.end();       
+        while (iter != end) {
+            _renderer->submit(*iter);
+            iter++;
+        }
+    }
+
+    void RenderManager::render() {
+        assert(_renderer);
+        _renderer->render_submissions();
+    }
+
+    void RenderManager::render_end() {
+        assert(_renderer);
+        _renderer->render_end();
+    }
+
+    void RenderManager::render_present() {
+        glfwSwapBuffers(&WindowManager::get_singleton().get_glfw_window());
+    }
 }

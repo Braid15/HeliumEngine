@@ -8,8 +8,8 @@ namespace HeliumEngine {
 
     MouseData::MouseData() {
         std::fill(buttons, buttons + MOUSE_BUTTON_LAST, BUTTON_STATE_RELEASED);
-        cursor_x = 0;
-        cursor_y = 0;
+        position.x = 0;
+        position.y = 0;
     }
 
     JoystickData::JoystickData() {

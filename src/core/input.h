@@ -1,6 +1,7 @@
 #pragma once
 
 #include <helium_std.h>
+#include "core/math/math.h"
 
 namespace HeliumEngine {
 
@@ -156,10 +157,7 @@ namespace HeliumEngine {
 
     struct MouseData final {
         ButtonState buttons[MOUSE_BUTTON_LAST];
-
-        // @TODO: Use Vector2 when it's implemented
-        float32 cursor_x;
-        float32 cursor_y;
+        glm::vec2 position;
 
         MouseData();
     };
@@ -190,5 +188,19 @@ namespace HeliumEngine {
         ButtonState buttons[JOYSTICK_BUTTON_LAST];
 
         JoystickData();
+    };
+
+    struct InputData final {
+        KeyboardData& keyboard;
+        MouseData& mouse;
+        JoystickData& joystick;
+
+        InputData() = delete;
+        InputData(const InputData&) = delete;
+        InputData& operator=(const InputData&) = delete;
+
+        InputData(KeyboardData& k, MouseData& m, JoystickData& j) :
+            keyboard(k), mouse(m), joystick(j) 
+        {}
     };
 }

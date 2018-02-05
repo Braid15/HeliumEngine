@@ -1,6 +1,7 @@
 #pragma once
 
 #include <helium_std.h>
+#include "math/math.h"
 
 namespace HeliumEngine {
 
@@ -41,11 +42,16 @@ namespace HeliumEngine {
 
         bool compile();
         void destroy();
-        void bind() const;
-        void unbind() const;
+        void enable() const;
+        void disable() const;
 
-        bool set_int32_uniform(const char* uniform, const int32& value);
-        bool set_float32_uniform(const char* uniform, const float32& value);
+        bool set_uniform(const char* uniform, const int32& value);
+        bool set_uniform(const char* uniform, const float32& value);
+        bool set_uniform(const char* uniform, const mat3& value);
+        bool set_uniform(const char* uniform, const mat4& value);
+        bool set_uniform(const char* uniform, const vec2& value);
+        bool set_uniform(const char* uniform, const vec3& value);
+        bool set_uniform(const char* uniform, const vec4& value);
 
     private:
         enum class ErrorType : uint8 {

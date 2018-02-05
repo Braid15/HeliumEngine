@@ -2,20 +2,24 @@
 
 #include <helium_std.h>
 #include "_glfw_glew_include.h"
+#include "graphics/irenderer.h"
+#include "graphics/render_component.h"
+#include "graphics/render_component_2d.h"
 
 namespace HeliumEngine {
 
-    #define MAX_BATCH_SIZE 1000
-
     class RenderManager final {
     private:
+        friend class Engine;
+        // @TEMP: Doing this until messages are implemented
+        friend class ARenderComponent;
+
         static RenderManager _singleton;
 
-        GLuint _primitive_batch_vbo[2];
+        // @TEMP: SHould choose better data structure or use handles for RenderCOmponents or seomthing
+        std::list<ARenderComponent*> _render_components;
 
-        uint32 _batch_count;
-        uint8 _current_buffer;
-        uint32 _primitive_batch_vertices_buffer[2][MAX_BATCH_SIZE];
+        IRenderer* _renderer;
     public:
         RenderManager(const RenderManager&) = delete;
         ~RenderManager() {}
@@ -24,15 +28,25 @@ namespace HeliumEngine {
 
         static RenderManager& get_singleton();
 
-        bool initialize();
-        void shutdown();
+        void submit(ARenderComponent* render_component);
 
         // @TEMP: Should this be in another class?
         void draw_line(uint32 start_x, uint32 start_y, uint32 end_x, uint32 end_y);
 
-        // @TEMP: This should only be exposed to Engine
-        void render_batch();
     private:
         RenderManager();
+
+        bool initialize();
+        void shutdown();
+
+        void add_render_component(ARenderComponent* const component);
+        void remove_render_component(ARenderComponent* const component);
+
+        void set_renderer(IRenderer* renderer);
+
+        void render_begin();
+        void render();
+        void render_end();
+        void render_present();
     };
 }
