@@ -91,7 +91,6 @@ namespace HeliumEngine {
 
         _exit_code = 0;
 
-
         return true;
     }
 
@@ -116,6 +115,7 @@ namespace HeliumEngine {
                        _input_manager->get_mouse_data(),
                        _input_manager->get_joystick_data());
         _application->handle_input(data);
+        _input_manager->refresh_data();
     }
 
     void Engine::render() {

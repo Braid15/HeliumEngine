@@ -3,6 +3,22 @@
 
 namespace HeliumEngine {
 
+    static MouseButton glfw_mouse_button_to_helium_mouse_button(int button) {
+        switch (button) {
+            case GLFW_MOUSE_BUTTON_1 : return MOUSE_BUTTON_1;
+            case GLFW_MOUSE_BUTTON_2 : return MOUSE_BUTTON_2;
+            case GLFW_MOUSE_BUTTON_3 : return MOUSE_BUTTON_3;
+            case GLFW_MOUSE_BUTTON_4 : return MOUSE_BUTTON_4;
+            case GLFW_MOUSE_BUTTON_5 : return MOUSE_BUTTON_5;
+            case GLFW_MOUSE_BUTTON_6 : return MOUSE_BUTTON_6;
+            case GLFW_MOUSE_BUTTON_7 : return MOUSE_BUTTON_7;
+            case GLFW_MOUSE_BUTTON_8 : return MOUSE_BUTTON_8;
+            default                  : return MOUSE_BUTTON_NULL;
+        }
+
+        return MOUSE_BUTTON_NULL;
+    }
+
     static Key convert_glfw_key_to_helium_key(int glfw_key) {
         switch (glfw_key) {
             case GLFW_KEY_SPACE         : return KEY_SPACE;
@@ -229,7 +245,27 @@ namespace HeliumEngine {
     static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
         KeyboardData* const keyboard_data = &InputManager::get_singleton()._keyboard_data;
     
-        KeyState state = (action == GLFW_PRESS || action == GLFW_REPEAT) ? KEY_STATE_PRESSED : KEY_STATE_RELEASED;
+        KeyState state = KEY_STATE_NULL;
+
+        switch (action) {
+            case GLFW_PRESS:
+            {
+                state = KEY_STATE_PRESSED;
+                break;
+            }
+
+            case GLFW_REPEAT:
+            {
+                state = KEY_STATE_HELD;
+                break;
+            }
+            
+            case GLFW_RELEASE:
+            {
+                state = KEY_STATE_RELEASED;
+                break;
+            }
+        }
 
         // Handle tilde key
         if (mods == GLFW_MOD_SHIFT && key == GLFW_KEY_GRAVE_ACCENT) {
@@ -238,12 +274,14 @@ namespace HeliumEngine {
             keyboard_data->keys[key] = state;
         }
 
-        std::cout << InputManager::get_singleton().get_key_name(convert_glfw_key_to_helium_key(key)) << "\n";
+        keyboard_data->last_event     = state;
+        keyboard_data->last_event_key = convert_glfw_key_to_helium_key(key);
     }
 
     static void glfw_mouse_cursor_callback(GLFWwindow* window, double x_pos, double y_pos) {
         MouseData* const mouse_data = &InputManager::get_singleton()._mouse_data;
 
+        mouse_data->last_event = MOUSE_EVENT_MOTION;
         mouse_data->position.x = static_cast<float32>(x_pos);
         mouse_data->position.y = static_cast<float32>(y_pos);
     }
@@ -251,14 +289,41 @@ namespace HeliumEngine {
     static void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
         MouseData* const mouse_data = &InputManager::get_singleton()._mouse_data;
 
-        ButtonState state = (action == GLFW_PRESS || action == GLFW_REPEAT) ? BUTTON_STATE_PRESSED : BUTTON_STATE_RELEASED;
+        ButtonState state = BUTTON_STATE_NULL;
 
-        mouse_data->buttons[button] = state;
+        switch (action) {
+            case GLFW_PRESS:
+            {
+                state = BUTTON_STATE_PRESSED;
+                mouse_data->last_event = MOUSE_EVENT_BUTTON_DOWN;
+                break;
+            } 
+            case GLFW_RELEASE:
+            {
+                state = BUTTON_STATE_RELEASED;
+                mouse_data->last_event = MOUSE_EVENT_BUTTON_UP;
+                break;
+            }
+
+            case GLFW_REPEAT:
+            {
+                state = BUTTON_STATE_HELD;
+                mouse_data->last_event = MOUSE_EVENT_BUTTON_HELD;
+                break;
+            }
+        }
+
+
+        mouse_data->buttons[button]   = state;
+        mouse_data->last_event_button = glfw_mouse_button_to_helium_mouse_button(button);
     }
 
     static void glfw_scroll_wheel_callback(GLFWwindow* window, double x_offset, double y_offset) {
-        // idk what to do yet
-        std::cout << "glfw_scroll_wheel_callback() UNIMPLEMENTED!!!\n";
+        MouseData* const mouse_data = &InputManager::get_singleton()._mouse_data;
+
+        mouse_data->last_event      = MOUSE_EVENT_SCROLL;
+        mouse_data->scroll_offset_x = x_offset;
+        mouse_data->scroll_offset_y = y_offset;
     }
 
     static void glfw_joystick_connection_callback(int joystick_id, int event_type) {
@@ -330,6 +395,15 @@ namespace HeliumEngine {
 
     JoystickData& InputManager::get_joystick_data() {
         return _joystick_data;
+    }
+
+    void InputManager::refresh_data() {
+        _keyboard_data.last_event       = KEY_STATE_NULL;
+        _keyboard_data.last_event_key   = KEY_NULL;
+        _mouse_data.last_event          = MOUSE_EVENT_NULL;
+        _mouse_data.last_event_button   = MOUSE_BUTTON_NULL;
+        _mouse_data.scroll_offset_x     = 0;
+        _mouse_data.scroll_offset_y     = 0;
     }
 
 

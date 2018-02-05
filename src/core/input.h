@@ -9,6 +9,7 @@ namespace HeliumEngine {
         KEY_STATE_NULL     = -1,
         KEY_STATE_RELEASED = 0,
         KEY_STATE_PRESSED,
+        KEY_STATE_HELD, 
     } KeyState;
 
     // Pretty much 1:1 with GLFW_KEY #defines
@@ -129,6 +130,8 @@ namespace HeliumEngine {
 
     struct KeyboardData final {
         KeyState keys[KEY_LAST];
+        KeyState last_event;
+        Key last_event_key;
 
         KeyboardData();
     };
@@ -137,6 +140,7 @@ namespace HeliumEngine {
         BUTTON_STATE_NULL     = -1,
         BUTTON_STATE_RELEASED = 0,
         BUTTON_STATE_PRESSED,
+        BUTTON_STATE_HELD
     } ButtonState;
 
     typedef enum {
@@ -148,6 +152,7 @@ namespace HeliumEngine {
         MOUSE_BUTTON_4,
         MOUSE_BUTTON_5,
         MOUSE_BUTTON_6,
+        MOUSE_BUTTON_7,
         MOUSE_BUTTON_8,
         MOUSE_BUTTON_LAST,
         MOUSE_BUTTON_LEFT   = MOUSE_BUTTON_1,
@@ -155,9 +160,22 @@ namespace HeliumEngine {
         MOUSE_BUTTON_MIDDLE = MOUSE_BUTTON_3
     } MouseButton;
 
+    typedef enum {
+        MOUSE_EVENT_NULL,
+        MOUSE_EVENT_MOTION,
+        MOUSE_EVENT_BUTTON_UP,
+        MOUSE_EVENT_BUTTON_DOWN,
+        MOUSE_EVENT_BUTTON_HELD,
+        MOUSE_EVENT_SCROLL
+    } MouseEvent;
+
     struct MouseData final {
         ButtonState buttons[MOUSE_BUTTON_LAST];
         glm::vec2 position;
+        MouseEvent last_event;
+        MouseButton last_event_button;
+        float32 scroll_offset_x;
+        float32 scroll_offset_y;
 
         MouseData();
     };
@@ -190,11 +208,14 @@ namespace HeliumEngine {
         JoystickData();
     };
 
-    struct InputData final {
+    // @TODO: Make this into a class instead of a struct and refactor
+    class InputData final {
+    private:
         KeyboardData& keyboard;
         MouseData& mouse;
         JoystickData& joystick;
 
+    public:
         InputData() = delete;
         InputData(const InputData&) = delete;
         InputData& operator=(const InputData&) = delete;
@@ -202,5 +223,69 @@ namespace HeliumEngine {
         InputData(KeyboardData& k, MouseData& m, JoystickData& j) :
             keyboard(k), mouse(m), joystick(j) 
         {}
+
+        bool key_pressed(const Key key) {
+            if (keyboard.last_event != KEY_STATE_PRESSED) return false;
+            return keyboard.last_event_key == key;
+        }
+
+        bool key_held(const Key key) {
+            return keyboard.keys[key] == KEY_STATE_HELD;
+        }
+
+        bool key_released(const Key key) {
+            if (keyboard.last_event != KEY_STATE_RELEASED) return false;
+            return keyboard.last_event_key == key;
+        }
+
+        bool mouse_moved() {
+            return mouse.last_event == MOUSE_EVENT_MOTION;
+        }
+
+        vec2& mouse_position() {
+            return mouse.position;
+        }
+
+        bool mouse_scroll() {
+            return mouse.last_event == MOUSE_EVENT_SCROLL;
+        }
+
+        bool mouse_scroll_up() {
+            if (mouse.last_event != MOUSE_EVENT_SCROLL) return false;
+            return mouse.scroll_offset_y > 0;
+        }
+
+        bool mouse_scroll_down() {
+            if (mouse.last_event != MOUSE_EVENT_SCROLL) return false;
+            return mouse.scroll_offset_y < 0;
+        }
+
+        bool button_pressed(const MouseButton button) {
+            if (mouse.last_event != MOUSE_EVENT_BUTTON_DOWN) return false;
+            return mouse.last_event_button == button;
+        }
+
+        bool button_released(const MouseButton button) {
+            if (mouse.last_event != MOUSE_EVENT_BUTTON_UP) return false;
+            return mouse.last_event_button == button;
+        }
+
+        bool button_held(const MouseButton button) {
+            return mouse.buttons[button] == BUTTON_STATE_PRESSED;
+        }
+
+        bool button_pressed(const JoystickButton button) {
+            std::cout << "[InputData] UNIMPLEMENTED\n";
+        }
+
+        bool button_released(const JoystickButton button) {
+            std::cout << "[InputData] UNIMPLEMENTED\n";
+        }
+
+        bool button_held(const JoystickButton button) {
+            std::cout << "[InputData] UNIMPLEMENTED\n";
+        }
+
+
     };
 }

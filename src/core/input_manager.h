@@ -51,5 +51,7 @@ namespace HeliumEngine {
 
         bool initialize();
         void shutdown();
+        void refresh_data();
+
     };
 }
