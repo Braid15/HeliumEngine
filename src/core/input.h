@@ -260,6 +260,10 @@ namespace HeliumEngine {
             return mouse.scroll_offset_y < 0;
         }
 
+        bool mouse_drag(const MouseButton button) {
+            return button_held(button) && mouse_moved();
+        }
+
         bool button_pressed(const MouseButton button) {
             if (mouse.last_event != MOUSE_EVENT_BUTTON_DOWN) return false;
             return mouse.last_event_button == button;
