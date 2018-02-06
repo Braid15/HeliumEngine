@@ -2,6 +2,8 @@
 #include <core/math/math.h>
 #include <core/graphics/render_component.h>
 #include <core/graphics/render_component_2d.h>
+#include <core/timer.h>
+#include <core/utils/hash.h>
 
 namespace HeliumEngine {
 
@@ -11,6 +13,12 @@ namespace HeliumEngine {
         return _singleton;
     }
 
+    float64 tdt = 0.0f;
+    float64 prev = 0.0f;
+    float64 current = 1.0f / 60.0f;
+    float64 alpha = 0.0f;
+    float64 frame_time = 0.0f;
+    //float64 frame_time = 0.0f;
     int Engine::run() {
        if (!_singleton.initialize()) return _singleton.get_exit_code();
 
@@ -24,25 +32,31 @@ namespace HeliumEngine {
        float64 accumulator = 0.0;
 
        while (!glfwWindowShouldClose(&_singleton._window_manager->get_glfw_window())) {
+
            float64 new_time = glfwGetTime();
-           float64 frame_time = new_time - current_time;
+           frame_time = new_time - current_time;
+           current_time = new_time;
+
            if (frame_time > 0.25) {
                frame_time = 0.25;
            }
 
-           //std::cout << "accumulator: " << accumulator << "\n";
            current_time = new_time;
            accumulator += frame_time;
 
+           _singleton.process_input();
+
            while (accumulator >= dt) {
-               _singleton.process_input();
+               prev = current;
                _singleton.update();
                t += dt;
                accumulator -= dt;
            }
 
-           const float64 alpha = accumulator / dt;
-            
+           alpha = accumulator / dt;
+
+           // tdt should be passed to renderer and name should be changed
+            tdt = current * alpha + prev * (1.0 - alpha);
            _singleton.render();
             
            glfwPollEvents();
@@ -63,15 +77,25 @@ namespace HeliumEngine {
         _vsync          = true;
     }
 
-    bool Engine::initialize() {
+    float32 Engine::get_delta_time() {
+        return static_cast<float32>(frame_time);
+    }
+
+    bool Engine::initialize(){
         _exit_code = -1;
 
         glfwInit();
+        Timer::initialize();
+
+        _string_id_manager = &StringIdManager::get_singleton();
+        if (!_string_id_manager->initialize()) return false;
+        _string_id_manager->set_hash_function(new StdHashFunction());
 
         _window_manager = &WindowManager::get_singleton();
         if (!_window_manager->initialize()) return false;
 
-        // Do this stuff before initializing any other manager
+        // Do this stuff before initializing any other manager that is dependent
+        // on glfw
         glfwMakeContextCurrent(&_window_manager->get_glfw_window());
         glewExperimental = true;
         glewInit();
@@ -107,6 +131,9 @@ namespace HeliumEngine {
 
         assert(_window_manager);
         _window_manager->shutdown();
+
+        assert(_string_id_manager);
+        _string_id_manager->shutdown();
     }
 
     void Engine::process_input() {

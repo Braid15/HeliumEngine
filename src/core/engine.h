@@ -6,6 +6,8 @@
 #include "input_manager.h"
 #include "render_manager.h"
 #include <app/game_app.h>
+#include "timer.h"
+#include <core/utils/string_id.h>
 
 namespace HeliumEngine {
     // @TODO: See below to see what else needs implementing
@@ -24,6 +26,7 @@ namespace HeliumEngine {
         WindowManager* _window_manager;
         InputManager* _input_manager;
         RenderManager* _render_manager;
+        StringIdManager* _string_id_manager;
 
         GameApp* _application;
 
@@ -41,6 +44,7 @@ namespace HeliumEngine {
 
         static Engine& get_singleton();
         static int run();
+        float32 get_delta_time();
     private:
         Engine();
 

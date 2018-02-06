@@ -23,6 +23,12 @@
     <Filter Include="src\app">
       <UniqueIdentifier>{96be3e8f-a20f-419b-8197-d1271eeca9b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\core\game_objects">
+      <UniqueIdentifier>{22137275-678c-44d0-a746-c84513438ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\utils">
+      <UniqueIdentifier>{3fc328c6-0603-40c8-97d1-9b07aea4da13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +72,18 @@
     </ClCompile>
     <ClCompile Include="src\app\application.cpp">
       <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\timer.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\game_objects\game_object.cpp">
+      <Filter>src\core\game_objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\utils\string_id.cpp">
+      <Filter>src\core\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\utils\hash.cpp">
+      <Filter>src\core\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +146,24 @@
     </ClInclude>
     <ClInclude Include="src\app\application.h">
       <Filter>src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\timer.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\game_objects\game_object.h">
+      <Filter>src\core\game_objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\utils\string_id.h">
+      <Filter>src\core\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\utils\hash.h">
+      <Filter>src\core\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\game_objects\icomponent.h">
+      <Filter>src\core\game_objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\game_objects\game_objects.h">
+      <Filter>src\core\game_objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

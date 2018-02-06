@@ -189,6 +189,7 @@
     <ClCompile Include="src\app\application.cpp" />
     <ClCompile Include="src\app\game_app.cpp" />
     <ClCompile Include="src\core\engine.cpp" />
+    <ClCompile Include="src\core\game_objects\game_object.cpp" />
     <ClCompile Include="src\core\graphics\render_component.cpp" />
     <ClCompile Include="src\core\graphics\render_component_2d.cpp" />
     <ClCompile Include="src\core\graphics\simple_renderer_2d.cpp" />
@@ -197,7 +198,10 @@
     <ClCompile Include="src\core\math\math.cpp" />
     <ClCompile Include="src\core\render_manager.cpp" />
     <ClCompile Include="src\core\shader.cpp" />
+    <ClCompile Include="src\core\timer.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
+    <ClCompile Include="src\core\utils\hash.cpp" />
+    <ClCompile Include="src\core\utils\string_id.cpp" />
     <ClCompile Include="src\core\window_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +209,9 @@
     <ClInclude Include="src\app\game_app.h" />
     <ClInclude Include="src\core\core.h" />
     <ClInclude Include="src\core\engine.h" />
+    <ClInclude Include="src\core\game_objects\game_object.h" />
+    <ClInclude Include="src\core\game_objects\game_objects.h" />
+    <ClInclude Include="src\core\game_objects\icomponent.h" />
     <ClInclude Include="src\core\graphics\irenderer.h" />
     <ClInclude Include="src\core\graphics\render_component.h" />
     <ClInclude Include="src\core\graphics\render_component_2d.h" />
@@ -215,8 +222,11 @@
     <ClInclude Include="src\core\math\math.h" />
     <ClInclude Include="src\core\render_manager.h" />
     <ClInclude Include="src\core\shader.h" />
+    <ClInclude Include="src\core\timer.h" />
     <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\core\types.h" />
+    <ClInclude Include="src\core\utils\hash.h" />
+    <ClInclude Include="src\core\utils\string_id.h" />
     <ClInclude Include="src\core\window_manager.h" />
     <ClInclude Include="src\core\_glfw_glew_include.h" />
     <ClInclude Include="src\helium_engine.h" />

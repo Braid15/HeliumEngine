@@ -229,6 +229,18 @@ namespace HeliumEngine {
             return keyboard.last_event_key == key;
         }
 
+        const Key& key() {
+            return keyboard.last_event_key;
+        }
+
+        bool key_pressed() {
+            return keyboard.last_event == KEY_STATE_PRESSED;
+        }
+
+        bool key_released() {
+            return keyboard.last_event == KEY_STATE_RELEASED;
+        }
+
         bool key_held(const Key key) {
             return keyboard.keys[key] == KEY_STATE_HELD;
         }
@@ -261,20 +273,20 @@ namespace HeliumEngine {
         }
 
         bool mouse_drag(const MouseButton button) {
-            return button_held(button) && mouse_moved();
+            return mouse_click_held(button) && mouse_moved();
         }
 
-        bool button_pressed(const MouseButton button) {
+        bool mouse_click_down(const MouseButton button) {
             if (mouse.last_event != MOUSE_EVENT_BUTTON_DOWN) return false;
             return mouse.last_event_button == button;
         }
 
-        bool button_released(const MouseButton button) {
+        bool mouse_click_up(const MouseButton button) {
             if (mouse.last_event != MOUSE_EVENT_BUTTON_UP) return false;
             return mouse.last_event_button == button;
         }
 
-        bool button_held(const MouseButton button) {
+        bool mouse_click_held(const MouseButton button) {
             return mouse.buttons[button] == BUTTON_STATE_PRESSED;
         }
 

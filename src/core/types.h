@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 namespace HeliumEngine {
 
@@ -21,4 +22,9 @@ namespace HeliumEngine {
 
     typedef float  float32;
     typedef double float64;
+
+    inline std::ostream& operator<<(std::ostream& os, const uint8& val) {
+        os << static_cast<int>(val);
+        return os;
+    }
 }
