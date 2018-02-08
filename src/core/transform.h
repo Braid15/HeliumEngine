@@ -2,17 +2,23 @@
 
 #include <helium_std.h>
 #include <core/math/math.h>
+#include <core/game_objects/icomponent.h>
+#include <core/utils/string_id.h>
 
 namespace HeliumEngine {
 
-    class Transform final {
+    class Transform : public BaseComponent {
     private:
         vec3 _position;
         vec3 _scale;
         vec4 _rotation;
+
+        friend class GameObject;
+        static const StringId _component_type_id;
     public:
         Transform();
 
+        void set_position(const vec2 pos);
         void set_position(const vec3 pos);
         const vec3& get_position() const;
         vec3& get_position();
@@ -26,5 +32,9 @@ namespace HeliumEngine {
         const vec4& get_rotation() const;
         vec4& get_rotation();
         float32 get_rotation_angle();
+
+        bool initialize() override;
+        void shutdown() override;
+        void update() override {}
     };
 }

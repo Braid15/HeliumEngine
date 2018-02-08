@@ -14,7 +14,6 @@ namespace HeliumEngine {
 
         static StringIdManager _singleton;
 
-        std::map<StringId, const char*> _string_id_map;
         IHashFunction* _hash;
     public:
         StringIdManager(const StringIdManager&) = delete;

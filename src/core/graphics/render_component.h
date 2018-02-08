@@ -5,6 +5,8 @@
 #include <core/math/math.h>
 #include <core/shader.h>
 #include <core/graphics/irenderer.h>
+#include <core/utils/string_id.h>
+#include <core/game_objects/icomponent.h>
 
 namespace HeliumEngine {
 
@@ -13,13 +15,12 @@ namespace HeliumEngine {
         RENDER_TYPE_3D
     } RenderType;
 
-    class ARenderComponent {
+    class ARenderComponent : public BaseComponent {
     protected:
         vec4 _color;
         vec4 _position;
         vec4 _size;
         Shader* _shader;
-        bool _enabled;
         bool _visible;
         uint16 _index_count;
     public:
@@ -41,16 +42,20 @@ namespace HeliumEngine {
         void set_shader(Shader* const shader);
         Shader* get_shader();
 
-        bool is_enabled() const;
         bool is_visible() const;
 
         // @TODO: Put vao and ibo in this class
         virtual const GLuint& get_vao_handle() const = 0;
         virtual const GLuint& get_ibo_handle() const = 0;
         virtual const RenderType get_render_type() const = 0;
-        virtual void on_render_begin(IRenderer&  renderer) = 0;
-        virtual void on_render(IRenderer& renderer) = 0;
-        virtual void on_render_end(IRenderer& renderer) = 0;
+
+        virtual void on_render_begin() = 0;
+        virtual void on_render_end() = 0;
+
+        virtual bool initialize() = 0;
+        virtual void shutdown() = 0;
+        virtual void update() = 0;
+
     protected:
         ARenderComponent();
     };

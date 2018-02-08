@@ -190,6 +190,7 @@
     <ClCompile Include="src\app\game_app.cpp" />
     <ClCompile Include="src\core\engine.cpp" />
     <ClCompile Include="src\core\game_objects\game_object.cpp" />
+    <ClCompile Include="src\core\game_objects\icomponent.cpp" />
     <ClCompile Include="src\core\graphics\render_component.cpp" />
     <ClCompile Include="src\core\graphics\render_component_2d.cpp" />
     <ClCompile Include="src\core\graphics\simple_renderer_2d.cpp" />

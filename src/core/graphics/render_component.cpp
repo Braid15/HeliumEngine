@@ -12,10 +12,12 @@ namespace HeliumEngine {
     }
 
     void ARenderComponent::set_color(const vec4 color) {
+        if (!is_enabled()) return;
         _color = color;
     }
 
     void ARenderComponent::set_color(const float32 r, const float32 g, const float32 b, const float32 a) {
+        if (!is_enabled()) return;
         _color.r = r;
         _color.g = g;
         _color.b = b;
@@ -43,6 +45,7 @@ namespace HeliumEngine {
     }
 
     void ARenderComponent::set_shader(Shader* const shader) {
+        if (!is_enabled()) return;
         if (_shader) {
             delete _shader;
         }
@@ -53,20 +56,18 @@ namespace HeliumEngine {
         return _shader;
     }
 
-    bool ARenderComponent::is_enabled() const {
-        return _enabled;
-    }
-
     bool ARenderComponent::is_visible() const {
         return _visible;
     }
 
     ARenderComponent::ARenderComponent() {
         _shader      = nullptr;
-        _enabled     = true;
         _index_count = 0;
         _visible     = true;
 
+        // @TODO: This needs to be more sophisticated. FOr instance,
+        //        it should only be added to the renderer that is attached to the 
+        //        scene where the entity belongs, etc
         RenderManager::get_singleton().add_render_component(this);
     }
 }

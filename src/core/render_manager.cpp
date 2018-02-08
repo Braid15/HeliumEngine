@@ -97,17 +97,22 @@ namespace HeliumEngine {
         glClearColor(color.r, color.g, color.b, color.a);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // @TEMP
-        std::list<ARenderComponent*>::iterator iter = _render_components.begin();
-        std::list<ARenderComponent*>::iterator end  = _render_components.end();       
-        while (iter != end) {
-            _renderer->submit(*iter);
-            iter++;
-        }
+        _renderer->render_begin();
     }
 
     void RenderManager::render() {
         assert(_renderer);
+
+        std::list<ARenderComponent*>::iterator iter = _render_components.begin();
+        std::list<ARenderComponent*>::iterator end  = _render_components.end();       
+        while (iter != end) {
+            if ((*iter)->is_visible() && (*iter)->is_enabled()) {
+                (*iter)->on_render_begin();
+                _renderer->submit(*iter);
+                (*iter)->on_render_end();
+            }
+            iter++;
+        }
         _renderer->render_submissions();
     }
 

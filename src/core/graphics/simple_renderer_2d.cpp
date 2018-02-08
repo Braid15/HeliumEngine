@@ -7,11 +7,7 @@
 namespace HeliumEngine {
 
     void SimpleRenderer2D::submit(ARenderComponent* render_component) {
-        bool enabled = render_component->is_enabled();
-        bool visible = render_component->is_visible();
-        bool is_2d   = render_component->get_render_type() == RENDER_TYPE_2D;
-
-        if (enabled && visible && is_2d) {
+        if (render_component->get_render_type() == RENDER_TYPE_2D) {
             _render_submissions.push_back(render_component);
         }
     }
@@ -23,6 +19,7 @@ namespace HeliumEngine {
     void SimpleRenderer2D::render_submissions() {
         while (!_render_submissions.empty()) {
             ARenderComponent* component = _render_submissions.front();
+
             glBindVertexArray(component->get_vao_handle());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, component->get_ibo_handle());
 

@@ -85,6 +85,9 @@
     <ClCompile Include="src\core\utils\hash.cpp">
       <Filter>src\core\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\game_objects\icomponent.cpp">
+      <Filter>src\core\game_objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\helium_std.h">

@@ -1,9 +1,15 @@
 #include "render_component_2d.h"
+#include <core/transform.h>
+#include <core/game_objects/game_object.h>
 
 namespace HeliumEngine {
 
+    const StringId RenderComponent2D::_component_type_id = STRING_ID("RENDER_COMPONENT_2D_TYPE_ID");
+
     RenderComponent2D::RenderComponent2D(const vec2 position, const vec2 size, const vec4 color, Shader* const shader) : 
         ARenderComponent() {
+
+        set_id(_component_type_id);
 
         _position = vec4(position, 1.0, 1.0);
         _size     = vec4(size, 0.0, 1.0);
@@ -59,6 +65,7 @@ namespace HeliumEngine {
     }
 
     void RenderComponent2D::set_position(const vec2 position) {
+        if (!is_enabled()) return;
         if (is_visible()) {
             _position = vec4(position, 1.0, 1.0);
         } else {
@@ -67,10 +74,12 @@ namespace HeliumEngine {
     }
 
     void RenderComponent2D::set_size(const vec2 size) {
+        if (!is_enabled()) return;
         _size = vec4(size, 0.0, 1.0);
     }
 
     void RenderComponent2D::set_visible(const bool visible) {
+        if (!is_enabled()) return;
         if (visible) {
             _position.z = 1.0;
             _visible    = true;
@@ -92,17 +101,22 @@ namespace HeliumEngine {
         return RENDER_TYPE_2D;
     }
 
-    void RenderComponent2D::on_render_begin(IRenderer& renderer) {
-        if (is_visible()) {
-            renderer.submit(this);
-        }
+    void RenderComponent2D::on_render_begin() {
+        if (!is_enabled()) return;
+        vec2 pos = get_owner().get_component<Transform>()->get_position();
+        set_position(pos);
     }
 
-    void RenderComponent2D::on_render(IRenderer& renderer) {
+    void RenderComponent2D::on_render_end() {
 
     }
 
-    void RenderComponent2D::on_render_end(IRenderer& renderer) {
+    bool RenderComponent2D::initialize() {
+        return true;
+    }
+
+    void RenderComponent2D::shutdown() {
 
     }
+
 }

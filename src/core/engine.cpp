@@ -89,7 +89,6 @@ namespace HeliumEngine {
 
         _string_id_manager = &StringIdManager::get_singleton();
         if (!_string_id_manager->initialize()) return false;
-        _string_id_manager->set_hash_function(new StdHashFunction());
 
         _window_manager = &WindowManager::get_singleton();
         if (!_window_manager->initialize()) return false;

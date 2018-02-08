@@ -3,6 +3,7 @@
 #include "render_component.h"
 #include <core/math/math.h>
 #include <core/_glfw_glew_include.h>
+#include <core/utils/string_id.h>
 
 namespace HeliumEngine {
 
@@ -12,6 +13,9 @@ namespace HeliumEngine {
         GLuint _vao;
         GLuint _vbo[2];
         GLuint _ibo;
+
+        friend GameObject;
+        static const StringId _component_type_id;
     public:
         RenderComponent2D() = delete;
         RenderComponent2D(const vec2 position, const vec2 size, const vec4 color, Shader* const shader);
@@ -27,8 +31,12 @@ namespace HeliumEngine {
         const GLuint& get_vao_handle() const override;
         const GLuint& get_ibo_handle() const override;
         const RenderType get_render_type() const override;
-        void on_render_begin(IRenderer& renderer) override;
-        void on_render(IRenderer& renderer) override;
-        void on_render_end(IRenderer& renderer) override;
+
+        void on_render_begin() override;
+        void on_render_end() override;
+
+        bool initialize() override;
+        void shutdown() override;
+        void update() override {}
     };
 }
